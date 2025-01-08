@@ -11,9 +11,7 @@
 1. Go inside the project
 2. Run `npm install`
 3. Run `npm run dev`
-4. Use ngrok to forward local port to internet
-5. Use ngrok generated url to call `/data` in langflow
-6. To test the backend make a postman request at `http://127.0.0.1:3000/langflow`
+4. To test the backend make a postman request at `http://127.0.0.1:3000/langflow`
 
 
 

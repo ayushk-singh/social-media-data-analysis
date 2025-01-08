@@ -41,24 +41,15 @@ export async function queryDatabase() {
       {}
     );
 
-    const sortOrder = ["reels", "carousel", "static"];
-    const resultData = [];
+    // Create a single string message
+    const message = Object.entries(totals)
+      .map(
+        ([type, { likes, shares, comments }]) =>
+          `${type}: Likes = ${likes}, Shares = ${shares}, Comments = ${comments}`
+      )
+      .join("\n");
 
-    for (const type in totals) {
-      const { likes, shares, comments } = totals[type];
-      resultData.push({
-        type,
-        total_likes: likes,
-        total_shares: shares,
-        total_comments: comments,
-      });
-    }
-
-    resultData.sort(
-      (a, b) => sortOrder.indexOf(a.type) - sortOrder.indexOf(b.type)
-    );
-
-    return resultData;
+    return message;
   } catch (error) {
     console.error("Error querying the database:", error.message);
     throw error;
