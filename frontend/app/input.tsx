@@ -1,7 +1,6 @@
 "use client";
 import { useState } from "react";
-import axios from "axios";
-
+import axios, { AxiosError } from "axios";
 import { PlaceholdersAndVanishInput } from "../components/ui/placeholders-and-vanish-input";
 
 export function PlaceholdersAndVanishInputDemo() {
@@ -37,12 +36,16 @@ export function PlaceholdersAndVanishInputDemo() {
     setResponseMessage("");
 
     try {
-      const response = await axios.get("http://127.0.0.1:5000/langflow", {
+      const { data } = await axios.get("https://social-media-data-analysis.onrender.com/langflow", {
         params: { inputValue },
       });
-      setResponseMessage(response.data.data); 
-    } catch (err: any) {
-      setError(err.response?.data?.message || "An error occurred while fetching data.");
+      setResponseMessage(data.data); 
+    } catch (err: unknown) {
+      if (err instanceof AxiosError) {
+        setError(err.response?.data?.message || "An error occurred while fetching data.");
+      } else {
+        setError("An unexpected error occurred.");
+      }
     } finally {
       setLoading(false);
     }
