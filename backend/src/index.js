@@ -1,9 +1,12 @@
 import express from "express";
 import { queryDatabase } from "./db/db.js";
 import { runLangFlow } from "./langflow/langflow.api.js";
+import cors from "cors";
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 5000;
+
+app.use(cors());
 
 app.get("/data", async (req, res) => {
   try {
@@ -19,8 +22,16 @@ app.get("/data", async (req, res) => {
 });
 
 app.get("/langflow", async (req, res) => {
+  const { inputValue } = req.query;
+  if (!inputValue) {
+    return res.status(400).json({
+      success: false,
+      message: "inputValue query parameter is required",
+    });
+  }
+
   try {
-    const data = await runLangFlow();
+    const data = await runLangFlow(inputValue); 
     res.status(200).json({
       success: true,
       data,
@@ -33,6 +44,7 @@ app.get("/langflow", async (req, res) => {
     });
   }
 });
+
 
 // Start the server
 app.listen(PORT, () => {
