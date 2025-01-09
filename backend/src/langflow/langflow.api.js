@@ -11,7 +11,7 @@ let publicUrl;
 
 const startNgrok = async () => {
   try {
-    publicUrl = await ngrok.connect(10000);
+    publicUrl = await ngrok.connect(process.env.PORT || 5000);
     console.log(`Ngrok is running at: ${publicUrl}`);
   } catch (error) {
     console.error("Error starting ngrok:", error.message);
